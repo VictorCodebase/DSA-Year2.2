@@ -1,6 +1,6 @@
 ## Question 1: Remove duplicates from *SORTED* array
 
-### Details
+### Details:
 |Name|Reg-Number|
 |----|----------|
 |Mark Victor Kithinji| SCT 212-0105/2022|
