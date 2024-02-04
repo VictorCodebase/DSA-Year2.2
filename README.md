@@ -24,5 +24,5 @@ A repository of DSA 2.2 - ICS 2105 assignments
 |  
 |-- `Lab`  
 |-- |-- `Question1`  
-|-- |-- `Question2`
-|-- |-- `Question3`
+|-- |-- `Question2`  
+|-- |-- `Question3`  
