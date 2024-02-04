@@ -10,6 +10,7 @@ struct Course
 struct Grade 
 {
     int mark;
+    
     std::string the_grade() {
         if (mark && mark >= 0 && mark <= 100){
             if(mark < 40) return "E";
@@ -53,34 +54,38 @@ struct Student
     grade(grade_),
     course(course_)
     {}
-
 };
 
 
 class StudentDetails
 {
-    bool gradesCalculated = false;
 public:
     //default constructor
     StudentDetails() = default;
     int studentCount;
+    bool gradesCalculated;
+    std::string regNum[40]; //40 is the max number of students
 
-    StudentDetails(int studentCount_){
-        std::cout << "Enter registration number of the students: ";
-        const int studentCount = studentCount_;
-        std::string regNum[studentCount];
 
-        while(true){
-            std::cout << "Student reg Number: (Type N to submit)" << std::endl;
-            std::cin >> regNum[0];
-
-        }
-
-    }
+    StudentDetails(int studentCount_, bool& gradesCalculated_){
+        studentCount = studentCount_;
+        gradesCalculated = gradesCalculated_;
+        };
 
     int viewStudentDetails(Student students[]){
-      std::cout << "Student details: " << std::endl;
+        std::cout << "running viewStudentDetails";
+        std::cout << "Enter registration number of the students: ";
         for(int i = 0; i < studentCount; i++){
+            std::cout << "Student " << i+1 << ": (Press N to submit, M to return to menu)";
+            std::string response;
+            std::cin >> response;
+            if (toupper(response[0]) == 'N') break;
+            else if (toupper(response[0]) == 'M') return 0;
+            else regNum[i] = response;
+        };
+        std::cout << "Student details: " << std::endl;
+        for(int i = 0; i < studentCount; i++){
+            if (students[i].registration_number != regNum[i]) continue;;
             std::cout << "Student " << i+1 << ": " << std::endl;
             std::cout << "Registration number: " << students[i].registration_number << std::endl;
             std::cout << "Name: " << students[i].name << std::endl;
@@ -91,52 +96,56 @@ public:
         }
         return 0;  
     }
-    int editDetails(Student students[]){
+    int editDetails(Student* students){
 
-        if (gradesCalculated) std::cout << "Grades have already been calculated. You cannot edit student details." << std::endl;
+        if (gradesCalculated) 
+        {
+        std::cout << "Grades have already been calculated. You cannot edit student details." << std::endl;
+        return 0;
+        }
         else std::cout << "Grades have not been calculated. You can edit student details." << std::endl;
 
         std::cout << "Enter registration number of student to edit: ";
         std::string regNum;
         std::cin >> regNum;
         for(int i = 0; i < studentCount; i++){
-            if(students[i].registration_number == regNum){
-                std::cout << "Enter new registration number, press N to skip: ";
-                std::string newRegNum;
-                std::cin >> newRegNum;
-                if (toupper(newRegNum[0]) != 'N') students[i].registration_number = newRegNum;
+            if(students[i].registration_number != regNum) continue;
 
-                std::cout << "Enter new name, press N to skip: ";
-                std::string newName;
-                std::cin >> newName;
-                if (toupper(newName[0]) != 'N') students[i].name = newName;
+            std::cout << "Enter new registration number, press N to skip: ";
+            std::string newRegNum;
+            std::cin >> newRegNum;
+            if (toupper(newRegNum[0]) != 'N') students[i].registration_number = newRegNum;
 
-                std::cout << "Enter new age, press N to skip: ";
-                int newAge;
-                std::cin >> newAge;
-                if (toupper(newAge) != 'N') students[i].age = newAge;
+            std::cout << "Enter new name, press N to skip: ";
+            std::string newName;
+            std::cin >> newName;
+            if (toupper(newName[0]) != 'N') students[i].name = newName;
 
-                std::cout << "Enter new mark, press N to skip: ";
-                int newMark;
-                std::cin >> newMark;
-                if (toupper(newMark) != 'N') students[i].grade.mark = newMark;
+            std::cout << "Enter new age, press 0 to skip: ";
+            int newAge;
+            std::cin >> newAge;
+            if (toupper(newAge) != 0) students[i].age = newAge;
 
-                std::cout << "Enter new course code, press N to skip: ";
-                std::string newCourseCode;
-                std::cin >> newCourseCode;
-                if (toupper(newCourseCode[0]) != 'N') students[i].course.course_code = newCourseCode;
+            std::cout << "Enter new mark, press -1 to skip: ";
+            int newMark;
+            std::cin >> newMark;
+            if (toupper(newMark) != -1) students[i].grade.mark = newMark;
 
-                std::cout << "Enter new course name, press N to skip: ";
-                std::string newCourseName;
-                std::cin >> newCourseName;
-                if (toupper(newCourseName[0]) != 'N') students[i].course.course_name = newCourseName;
-                break;
-            }
+            std::cout << "Enter new course code, press N to skip: ";
+            std::string newCourseCode;
+            std::cin >> newCourseCode;
+            if (toupper(newCourseCode[0]) != 'N') students[i].course.course_code = newCourseCode;
+
+            std::cout << "Enter new course name, press N to skip: ";
+            std::string newCourseName;
+            std::cin >> newCourseName;
+            if (toupper(newCourseName[0]) != 'N') students[i].course.course_name = newCourseName;
         }
         return 0;
     };
 
     int calculateGrades(Student students[]){
+        bool& changeAccessedBool = gradesCalculated;
         std::cout << "Note: Once grades are calculated, grades cannot be edited. Continue? (y/n): ";
         std::string answer;
         std::cin >> answer;
@@ -147,15 +156,15 @@ public:
         for(int i = 0; i < studentCount; i++){
             total += students[i].grade.mark;
             std::cout << "Grade: " << students[i].grade.the_grade() << std::endl;
-            
         }
         std::cout << "Total grade: " << total << std::endl;
-        std::cout << "Average grade: " << total/studentCount << std::endl;
-        gradesCalculated = true;
-        return 0;
+        std::cout << "Average grade: " << total / studentCount << std::endl;
+        changeAccessedBool = true;
+        std::cout << "bool value: " << gradesCalculated << std::endl;
+        std::cout << "Grades calculated successfully."<< changeAccessedBool << std::endl;
+        return 0; 
     };
 };
-
 
 
 int main() {
@@ -163,8 +172,8 @@ int main() {
     const int maxStudents = 40;
     Student students[maxStudents];
     int studentCount = 0;
+    bool gradesCalculated = false;
 
-    //!This array shall be used to ensure the user can see the details of the student that theyve just inputed
     //TODO: dont forget to implement this
     std::string curentStudent[10];
 
@@ -196,7 +205,6 @@ int main() {
         students[studentCount] = student;
         studentCount++;
         std::cout << "Student details: " << std::endl;
-
         std::cout << "Do you want to enter another student? (y/n): ";
         std::string answer;
         std::cin >> answer;
@@ -216,7 +224,7 @@ int main() {
         int option;
         std::cin >> option;
 
-            StudentDetails studentDetails(studentCount);
+            StudentDetails studentDetails(studentCount, gradesCalculated);
             switch (option)
             {
             case 1:
