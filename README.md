@@ -1,4 +1,8 @@
-## DSA assignment 2.2
+## DSA assignment 2.2. 
+
+Mark Victor Kithinji. 
+-SCT212-0105/2022
+
 
 A repository of DSA 2.2 - ICS 2105 assignments
 ## Repo structure for DSA assignment 1 by 5th Feb 2024
