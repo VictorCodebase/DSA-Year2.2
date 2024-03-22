@@ -5,6 +5,7 @@ Mark Victor Kithinji.
 
 
 A repository of DSA 2.2 - ICS 2105 assignments
+
 ## Repo structure for DSA assignment 1 by 5th Feb 2024
 
 `Repo root`  
@@ -26,7 +27,10 @@ A repository of DSA 2.2 - ICS 2105 assignments
 |-- |-- |-- `soln.py`  
 |-- |-- |-- `README.md`  
 |  
+|-- `Quiz_2`  
+|  
 |-- `Lab`  
 |-- |-- `Question1`  
 |-- |-- `Question2`  
 |-- |-- `Question3`  
+|
